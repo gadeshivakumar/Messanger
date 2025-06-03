@@ -7,33 +7,28 @@ import "./landingpage.css";
 export default function LandingPage() {
 
   const navigator=useNavigate();
-  const [lock,setlock]=useState(false);
+  
    useEffect(()=>{
       fetch("https://messanger-backend-cu42.onrender.com/islogin",{
           credentials:"include"
       })
       .then((res)=>{
           if(res.ok){
-          setlock(true)
+           navigator('/home');
           }
           else{
-            setlock(false)
-              throw new Error("unauthorized");
+            throw new Error("unauthorized");
           }
       }
       )
-      .catch((err)=>{console.log(err)
-          setlock(false);
+      .catch((err)=>{
+        console.log(err)
       })
 
-      if(lock){
-        navigator('/home');
-        }
-
-        console.log(lock)
+        
     }  
 
-   ,[lock])
+   ,[])
 
   return (
     <div className="landing-container">
