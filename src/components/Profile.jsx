@@ -10,7 +10,7 @@ export default function Profile() {
     const formData=new FormData();
     formData.append("dp",e.target.dp.files[0])
     try{
-        const res=await fetch("http://localhost:5000/profile",{
+        const res=await fetch("https://messanger-backend-cu42.onrender.com/profile",{
           method:"POST",
           credentials:"include",
           body:formData
@@ -26,7 +26,7 @@ export default function Profile() {
   }
 
   useEffect(()=>{
-    fetch("http://localhost:5000/getDetails",{
+    fetch("https://messanger-backend-cu42.onrender.com/getDetails",{
       method:"get",
       credentials:"include"
     }).then((res)=>{

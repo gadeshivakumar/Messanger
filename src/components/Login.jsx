@@ -7,7 +7,7 @@ export default function Login() {
     const handleSubmit= async (e)=>{
         e.preventDefault();
         try{
-            const res=await fetch("http://localhost:5000/login",{
+            const res=await fetch("https://messanger-backend-cu42.onrender.com/login",{
                 method:"POST",
                 credentials: "include",
                 headers:{"Content-Type":"application/json"},

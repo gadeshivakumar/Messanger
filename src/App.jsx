@@ -11,7 +11,6 @@ import Private from "./components/Private"
 import ErrorPage from './components/ErrorPage'
 import {useState,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom'
-import Public from './components/Public'
 export default function App() {
     
   return (

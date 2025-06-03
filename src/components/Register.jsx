@@ -7,16 +7,16 @@ export default function Register() {
     const handleSubmit=async (e)=>{
         e.preventDefault();
         try{
-            const res=await fetch("http://localhost:5000/register",{
+            const res=await fetch("https://messanger-backend-cu42.onrender.com/register",{
                 method:"POST",
+                credentials:"include",
                 headers:{"Content-Type":"application/json"},
                 body:JSON.stringify({
                     username:e.target.usernameInput.value,
                     phone:e.target.phoneInput.value,
                     password:e.target.passwordInput.value
-                })
+                }),
             })
-
             if(res.ok){
                 navigator("/login")
             }

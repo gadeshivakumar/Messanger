@@ -11,7 +11,7 @@ export default function Contact({name,key_id}) {
     e.preventDefault();
     e.stopPropagation();
     console.log("errooorr")
-    fetch("http://localhost:5000/delete",{
+    fetch("https://messanger-backend-cu42.onrender.com/delete",{
       method:"post",
       credentials:"include",
       headers:{"Content-Type":"application/json"},
@@ -25,7 +25,7 @@ export default function Contact({name,key_id}) {
   }
 
   useEffect(()=>{
-      fetch("http://localhost:5000/getDetails1",{
+      fetch("https://messanger-backend-cu42.onrender.com/getDetails1",{
         method:"post",
         credentials:"include",
          headers: {

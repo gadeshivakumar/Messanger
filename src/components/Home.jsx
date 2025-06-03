@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './home.css'
-import Contact from './contact'
+import Contact from './Contact'
 import {useNavigate,Link} from "react-router-dom"
 
 
@@ -15,7 +15,7 @@ export default function Home() {
   const handleLogout=async ()=>{
 
     try{
-      await fetch("http://localhost:5000/logout",{
+      await fetch("https://messanger-backend-cu42.onrender.com/logout",{
         method:"delete",
         credentials:"include"
       })
@@ -28,7 +28,7 @@ export default function Home() {
   const [contacts,setContacts]=useState([]);
   
   useEffect(()=>{
-      const conts=fetch("http://localhost:5000/con",{
+      const conts=fetch("https://messanger-backend-cu42.onrender.com/con",{
         method:"get",
         credentials:"include"
       })

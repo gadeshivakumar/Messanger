@@ -5,7 +5,7 @@ export default function Private({children}) {
     const navigator=useNavigate();
     const [lock,setlock]=useState(false);
  useEffect(()=>{
-    fetch("http://localhost:5000/islogin",{
+    fetch("https://messanger-backend-cu42.onrender.com/islogin",{
         credentials:"include"
     })
     .then((res)=>{
