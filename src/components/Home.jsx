@@ -4,8 +4,8 @@ import Contact from './Contact'
 import {useNavigate,Link} from "react-router-dom"
 
 
-export default function Home() {
-
+export default function Home({token}) {
+  console.log(token)
   const navigator=useNavigate();
 
   const handleAdd=()=>{
@@ -62,7 +62,7 @@ export default function Home() {
         <div className="content">
           {
             contacts.map((contact)=>{
-                return <Contact key={contact.phone} key_id={contact.phone} name={contact.name}/>
+                return <Contact key={contact.phone} key_id={contact.phone} token={token} name={contact.name}/>
             })
           }
         </div>

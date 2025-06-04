@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './contact.css'
 import { useNavigate } from 'react-router-dom'
-export default function Contact({name,key_id}) {
+export default function Contact({name,key_id,token}) {
 
   const navigator=useNavigate();
   const [prof,setProf]=useState({})
@@ -42,7 +42,7 @@ export default function Contact({name,key_id}) {
     },[])
 
   const handleClick=()=>{
-    navigator("/chat",{state:{profile:prof.profile,name,phone:key_id}})
+    navigator("/chat",{state:{profile:prof.profile,name,phone:key_id,token:token}})
   }
   return (
     <div className="card" onClick={handleClick}>

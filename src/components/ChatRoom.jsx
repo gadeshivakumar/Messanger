@@ -7,7 +7,7 @@ export default function ChatRoom() {
 
   const locator=useLocation();
   const [message,setMessage]=useState("");
-  const {profile,name,phone}=locator.state||{};
+  const {profile,name,phone,token}=locator.state||{};
   const [messages,setMessages]=useState([])
   const socket=useRef(null);
   const [counter,setCounter]=useState(0);
@@ -17,19 +17,7 @@ export default function ChatRoom() {
     setMessage("")
   }
 
-  const token = useMemo(() => {
-      const cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
-        const [x, y] = cookies[i].split("=");
-        if (x.trim() === "token") {
-          return y;
-        }
-      }
-      return null;
-    }, []);
-
-
-
+  
 
   useEffect(()=>{
 
