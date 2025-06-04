@@ -15,6 +15,7 @@ export default function Private({children}) {
         setlock(true)
         }
         else{
+          console.log("error due to islogin")
             throw new Error("unauthorized");
         }
     }
