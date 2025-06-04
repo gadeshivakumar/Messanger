@@ -20,7 +20,7 @@ export default function Private({children}) {
         }
     }
     )
-    .catch((err)=>{console.log(err)
+    .catch((err)=>{console.log(err,"rcb")
         navigator("/error");
     })
  },[])
