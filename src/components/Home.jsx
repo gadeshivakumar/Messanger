@@ -5,7 +5,6 @@ import {useNavigate,Link} from "react-router-dom"
 
 
 export default function Home({token}) {
-  console.log(token)
   const navigator=useNavigate();
 
   const handleAdd=()=>{
