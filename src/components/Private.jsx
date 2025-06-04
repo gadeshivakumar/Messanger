@@ -28,7 +28,7 @@ export default function Private({children}) {
  },[])
   return (
     <div>
-      {lock?<>{React.cloneElement(children,{token:token})}</>:null}
+      {lock?<>{React.cloneElement(children,{token})}</>:null}
     </div>
   )
 }

@@ -17,11 +17,8 @@ export default function ChatRoom() {
     setMessage("")
   }
 
-  
-
   useEffect(()=>{
-    console.log(token)
-    socket.current=io("https://messanger-backend-cu42.onrender.com/",{
+    socket.current=io("https://messanger-backend-cu42.onrender.com",{
       withCredentials:true,
       auth:{token:token}
     })
