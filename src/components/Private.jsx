@@ -11,7 +11,7 @@ export default function Private({children}) {
     })
     .then((res)=>{
         if(res.ok){
-          console.log(res.json())
+          res.json().then((data)=>console.log(data))
         setlock(true)
         }
         else{
