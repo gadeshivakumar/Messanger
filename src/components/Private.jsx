@@ -7,11 +7,11 @@ export default function Private({children}) {
  useEffect(()=>{
   console.log('hey i am in private page')
     fetch("https://messanger-backend-cu42.onrender.com/islogin",{
-        credentials:"include"
+        credentials:"include",
     })
     .then((res)=>{
         if(res.ok){
-          console.log("clear")
+          console.log(res.json())
         setlock(true)
         }
         else{
