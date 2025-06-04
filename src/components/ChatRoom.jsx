@@ -20,7 +20,7 @@ export default function ChatRoom() {
   
 
   useEffect(()=>{
-    console.log(token)
+    console.log(token.token)
     socket.current=io("https://messanger-backend-cu42.onrender.com/",{
       withCredentials:true,
       auth:{token:token}
