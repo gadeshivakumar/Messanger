@@ -5,11 +5,13 @@ export default function Private({children}) {
     const navigator=useNavigate();
     const [lock,setlock]=useState(false);
  useEffect(()=>{
+  console.log('hey i am in private page')
     fetch("https://messanger-backend-cu42.onrender.com/islogin",{
         credentials:"include"
     })
     .then((res)=>{
         if(res.ok){
+          console.log("clear")
         setlock(true)
         }
         else{

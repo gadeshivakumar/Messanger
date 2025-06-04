@@ -14,6 +14,7 @@ export default function Login() {
                 body:JSON.stringify({phone:e.target.phoneInput.value,password:e.target.passwordInput.value})
             })
             if(res.ok){
+              console.log('came back here')
             navigator("/home");
             }
             else if(res.status===404){
