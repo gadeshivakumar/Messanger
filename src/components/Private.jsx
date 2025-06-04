@@ -11,8 +11,8 @@ export default function Private({children}) {
     })
     .then((res)=>{
         if(res.ok){
-          res.json().then((data)=>console.log(data))
         setlock(true)
+        return res.json()
         }
         else{
           console.log("error due to islogin")
@@ -20,6 +20,7 @@ export default function Private({children}) {
         }
     }
     )
+    .then((res)=>{console.log(res)})
     .catch((err)=>{console.log(err,"rcb")
         navigator("/error");
     })
