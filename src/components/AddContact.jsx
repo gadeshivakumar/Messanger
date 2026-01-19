@@ -5,7 +5,7 @@ export default function AddContact() {
     const navigator=useNavigate();
     const handleSubmit=(e)=>{
         e.preventDefault();
-        fetch("https://messanger-backend-cu42.onrender.com/add",{
+        fetch("http://localhost:5000/api/user/add",{
             method:"POST",
             credentials:"include",
             headers:{"Content-Type":"application/json"},

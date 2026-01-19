@@ -1,16 +1,19 @@
 import {React,useEffect,useState} from 'react'
 import "./profile.css"
 import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react';
+import AuthContext from '../apicontext';
 export default function Profile() {
 
   const [prof,setProf]=useState({})
   const navigator=useNavigate();
+  const {user}=useContext(AuthContext);
   const handleUpdate=async (e)=>{
     e.preventDefault();
     const formData=new FormData();
     formData.append("dp",e.target.dp.files[0])
     try{
-        const res=await fetch("https://messanger-backend-cu42.onrender.com/profile",{
+        const res=await fetch("http://localhost:5000/api/user/profile",{
           method:"POST",
           credentials:"include",
           body:formData
@@ -26,7 +29,7 @@ export default function Profile() {
   }
 
   useEffect(()=>{
-    fetch("https://messanger-backend-cu42.onrender.com/getDetails",{
+    fetch(`http://localhost:5000/api/user/getDetails/${user.phone}`,{
       method:"get",
       credentials:"include"
     }).then((res)=>{

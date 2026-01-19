@@ -1,34 +1,23 @@
-import {React,useEffect,useState} from "react";
-import { Link ,useNavigate} from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../apicontext";
 import "./landingpage.css";
-
-
+import Loader from "./Loader";
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+  const { user, isLoading } = useContext(AuthContext);
 
-  const navigator=useNavigate();
+  useEffect(() => {
+    if (!isLoading && user) {
+      navigate("/home", { replace: true });
+    }
+  }, [user, isLoading, navigate]);
+
   
-   useEffect(()=>{
-      fetch("https://messanger-backend-cu42.onrender.com/islogin",{
-          credentials:"include"
-      })
-      .then((res)=>{
-          if(res.ok){
-           navigator('/home');
-          }
-          else{
-            throw new Error("unauthorized");
-          }
-      }
-      )
-      .catch((err)=>{
-        console.log(err)
-      })
-
-        
-    }  
-
-   ,[])
+  if (isLoading) {
+    return <Loader/>
+  }
 
   return (
     <div className="landing-container">

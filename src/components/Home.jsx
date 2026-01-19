@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './home.css'
 import Contact from './Contact'
 import {useNavigate,Link} from "react-router-dom"
+import AuthContext from '../apicontext'
 
 
-export default function Home({token}) {
+export default function Home() {
+  const {setUser}=useContext(AuthContext)
   const navigator=useNavigate();
 
   const handleAdd=()=>{
@@ -14,20 +16,41 @@ export default function Home({token}) {
   const handleLogout=async ()=>{
 
     try{
-      await fetch("https://messanger-backend-cu42.onrender.com/logout",{
-        method:"delete",
+      await fetch("http://localhost:5000/api/auth/logout",{
+        method:"DELETE",
         credentials:"include"
       })
-      navigator("/")
+      setUser(null);
     }
     catch(err){
       console.log("err",err)
     }
   }
   const [contacts,setContacts]=useState([]);
+
+  const handleDelete=(e,key_id)=>{
+      e.preventDefault();
+      e.stopPropagation();
+      fetch(`http://localhost:5000/api/user/delete/${key_id}`,{
+        method:"DELETE",
+        credentials:"include",
+      }).then((res)=>{
+        if(res.ok){
+          console.log('successfully deleted');
+          setContacts((prev)=>{
+            return prev.filter((contact)=>contact.phone!==key_id)
+          })
+        }
+        else
+          throw new Error("something went wrong")
+      }).catch((err)=>{
+        console.log(err)
+      })
+  
+    }
   
   useEffect(()=>{
-      const conts=fetch("https://messanger-backend-cu42.onrender.com/con",{
+      const conts=fetch("http://localhost:5000/api/user/con",{
         method:"get",
         credentials:"include"
       })
@@ -37,7 +60,7 @@ export default function Home({token}) {
       })
       .catch((err)=>console.log(err))
     }
-  ,[contacts])
+  ,[])
 
   return (
     <>
@@ -61,7 +84,7 @@ export default function Home({token}) {
         <div className="content">
           {
             contacts.map((contact)=>{
-                return <Contact key={contact.phone} key_id={contact.phone} token={token} name={contact.name}/>
+                return <Contact key={contact.phone} key_id={contact.phone} onDelete={handleDelete}  name={contact.name}/>
             })
           }
         </div>

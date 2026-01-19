@@ -1,37 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import './contact.css'
 import { useNavigate } from 'react-router-dom'
-export default function Contact({name,key_id,token}) {
+export default function Contact({name,key_id,onDelete}) {
 
   const navigator=useNavigate();
   const [prof,setProf]=useState({})
   
  
-  const handleDelete=(e,key_id)=>{
-    e.preventDefault();
-    e.stopPropagation();
-    console.log("errooorr")
-    fetch("https://messanger-backend-cu42.onrender.com/delete",{
-      method:"post",
-      credentials:"include",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({phone:key_id})
-    }).then(()=>{
-      console.log('successfully deleted');
-    }).catch((err)=>{
-      console.log(err)
-    })
-
-  }
+ 
 
   useEffect(()=>{
-      fetch("https://messanger-backend-cu42.onrender.com/getDetails1",{
-        method:"post",
+      fetch(`http://localhost:5000/api/user/getDetails/${key_id}`,{
+        method:"get",
         credentials:"include",
-         headers: {
-            "Content-Type": "application/json" 
-          },
-        body:JSON.stringify({phone:key_id})
       }).then((res)=>{
         return res.json()
       }).then((res)=>{
@@ -42,7 +23,7 @@ export default function Contact({name,key_id,token}) {
     },[])
 
   const handleClick=()=>{
-    navigator("/chat",{state:{profile:prof.profile,name,phone:key_id,token:token}})
+    navigator("/chat",{state:{profile:prof.profile,name,phone:key_id}})
   }
   return (
     <div className="card" onClick={handleClick}>
@@ -50,7 +31,7 @@ export default function Contact({name,key_id,token}) {
       <div className="box">
         <h1 title={name}>{name}</h1>
       </div>
-      <button type="button" onClick={(e)=>handleDelete(e,key_id)}>Delete</button>
+      <button type="button" onClick={(e)=>onDelete(e,key_id)}>Delete</button>
     </div>
   )
 }

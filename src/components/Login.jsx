@@ -1,33 +1,38 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {useNavigate}  from "react-router-dom"
 import "./login.css"
+import AuthContext from '../apicontext';
 export default function Login() {
     const navigator=useNavigate();
     const [errMsg,setErrMsg]=useState("")
+    const {setUser} =useContext(AuthContext)
     const handleSubmit= async (e)=>{
         e.preventDefault();
         try{
-            const res=await fetch("https://messanger-backend-cu42.onrender.com/login",{
+            const res=await fetch("http://localhost:5000/api/auth/login",{
                 method:"POST",
                 credentials: "include",
                 headers:{"Content-Type":"application/json"},
                 body:JSON.stringify({phone:e.target.phoneInput.value,password:e.target.passwordInput.value})
             })
             if(res.ok){
-              console.log('came back here')
-            navigator("/home");
+              const data=await res.json()
+              setUser({
+                username:data.user.username,
+                phone:data.user.phone,
+                token:data.user.token
+              })
+              navigator("/");
             }
             else if(res.status===404){
               setErrMsg("Please Register before trying to login");
             }
             else{
                 setErrMsg("Invalid credentials")
-                navigator("/login")
             }
         }
         catch(err){
            setErrMsg("Some Error occured at the server please try again after some time")
-            navigator("/login")
         }
     }
 

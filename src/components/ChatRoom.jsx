@@ -3,28 +3,30 @@ import "./chatroom.css"
 import { useLocation } from 'react-router-dom'
 import {io} from 'socket.io-client';
 import ChatMesssage from './ChatMesssage';
+import { useContext } from 'react';
+import AuthContext from '../apicontext';
 export default function ChatRoom() {
 
   const locator=useLocation();
   const [message,setMessage]=useState("");
-  const {profile,name,phone,token}=locator.state||{};
+  const {profile,name,phone}=locator.state||{};
   const [messages,setMessages]=useState([])
   const socket=useRef(null);
   const [counter,setCounter]=useState(0);
-  
+  const {user}=useContext(AuthContext);
   const handleSend=()=>{
     socket.current.emit('send_message',{phone:phone,message:message});
     setMessage("")
   }
 
   useEffect(()=>{
-    socket.current=io("https://messanger-backend-cu42.onrender.com",{
+    socket.current=io("http://localhost:5000",{
       withCredentials:true,
-      auth:{token:token}
+      auth:{token:user.token}
     })
 
-    fetch("https://messanger-backend-cu42.onrender.com/getMessages",{
-      method:"Post",
+    fetch("http://localhost:5000/api/user/getMessages",{
+      method:"POST",
       credentials:"include",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({phone:phone})
@@ -59,7 +61,7 @@ export default function ChatRoom() {
     })
 
     socket.current.on("deleted",()=>{
-      fetch("https://messanger-backend-cu42.onrender.com/getMessages",{
+      fetch("http://localhost:5000/api/user/getMessages",{
       method:"Post",
       credentials:"include",
       headers:{"Content-Type":"application/json"},
