@@ -16,7 +16,7 @@ export default function Home() {
   const handleLogout=async ()=>{
 
     try{
-      await fetch("http://localhost:5000/api/auth/logout",{
+      await fetch("https://messanger-backend-cu42.onrender.com/api/auth/logout",{
         method:"DELETE",
         credentials:"include"
       })
@@ -31,7 +31,7 @@ export default function Home() {
   const handleDelete=(e,key_id)=>{
       e.preventDefault();
       e.stopPropagation();
-      fetch(`http://localhost:5000/api/user/delete/${key_id}`,{
+      fetch(`https://messanger-backend-cu42.onrender.com/api/user/delete/${key_id}`,{
         method:"DELETE",
         credentials:"include",
       }).then((res)=>{
@@ -50,7 +50,7 @@ export default function Home() {
     }
   
   useEffect(()=>{
-      const conts=fetch("http://localhost:5000/api/user/con",{
+      const conts=fetch("https://messanger-backend-cu42.onrender.com/api/user/con",{
         method:"get",
         credentials:"include"
       })

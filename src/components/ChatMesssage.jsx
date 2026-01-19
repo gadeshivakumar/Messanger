@@ -6,7 +6,7 @@ export default function ChatMesssage({ classname, message,id,phone,n,socket}) {
   const handleChange=(event)=>{
 
     if(event==="delete"){
-      fetch(`http://localhost:5000/api/user/${phone}/delMessage/${n}/${id}`,{
+      fetch(`https://messanger-backend-cu42.onrender.com/api/user/${phone}/delMessage/${n}/${id}`,{
         method:"DELETE",
         credentials:"include",
       })

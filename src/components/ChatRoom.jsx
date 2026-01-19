@@ -20,12 +20,12 @@ export default function ChatRoom() {
   }
 
   useEffect(()=>{
-    socket.current=io("http://localhost:5000",{
+    socket.current=io("https://messanger-backend-cu42.onrender.com",{
       withCredentials:true,
       auth:{token:user.token}
     })
 
-    fetch("http://localhost:5000/api/user/getMessages",{
+    fetch("https://messanger-backend-cu42.onrender.com/api/user/getMessages",{
       method:"POST",
       credentials:"include",
       headers:{"Content-Type":"application/json"},
@@ -61,7 +61,7 @@ export default function ChatRoom() {
     })
 
     socket.current.on("deleted",()=>{
-      fetch("http://localhost:5000/api/user/getMessages",{
+      fetch("https://messanger-backend-cu42.onrender.com/api/user/getMessages",{
       method:"Post",
       credentials:"include",
       headers:{"Content-Type":"application/json"},

@@ -21,7 +21,7 @@ export default function App() {
   useEffect(() => {
    const checkLogin = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/user/islogin", {
+        const res = await fetch("https://messanger-backend-cu42.onrender.com/api/user/islogin", {
           credentials: "include",
         });
 

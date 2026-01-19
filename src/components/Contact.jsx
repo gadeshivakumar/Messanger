@@ -10,7 +10,7 @@ export default function Contact({name,key_id,onDelete}) {
  
 
   useEffect(()=>{
-      fetch(`http://localhost:5000/api/user/getDetails/${key_id}`,{
+      fetch(`https://messanger-backend-cu42.onrender.com/api/user/getDetails/${key_id}`,{
         method:"get",
         credentials:"include",
       }).then((res)=>{
