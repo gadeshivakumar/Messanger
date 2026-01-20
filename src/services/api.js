@@ -1,116 +1,98 @@
 const API_BASE_URL = "https://messanger-backend-cu42.onrender.com/api";
 
-// Helper function to get auth headers
-const getAuthHeaders = (includeContentType = true) => {
-  const token = localStorage.getItem('authToken');
-  const headers = {};
-  if (includeContentType) {
-    headers['Content-Type'] = 'application/json';
-  }
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-  return headers;
+
+const jsonHeaders = {
+  "Content-Type": "application/json"
 };
 
-// Authentication API calls
+// ================= AUTH APIs =================
 export const authAPI = {
   login: async (phone, password) => {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include', // Keep for initial login to set cookies
+    return fetch(`${API_BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: jsonHeaders,
+      credentials: "include", // REQUIRED
       body: JSON.stringify({ phone, password })
     });
-    return response;
   },
 
   register: async (username, phone, password) => {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include', // Keep for initial registration
+    return fetch(`${API_BASE_URL}/auth/register`, {
+      method: "POST",
+      headers: jsonHeaders,
+      credentials: "include",
       body: JSON.stringify({ username, phone, password })
     });
-    return response;
   },
 
   logout: async () => {
-    const response = await fetch(`${API_BASE_URL}/auth/logout`, {
-      method: 'DELETE',
-      headers: getAuthHeaders(false),
-      credentials: 'include'
+    return fetch(`${API_BASE_URL}/auth/logout`, {
+      method: "DELETE",
+      credentials: "include"
     });
-    return response;
   },
 
   checkLogin: async () => {
-    const response = await fetch(`${API_BASE_URL}/user/islogin`, {
-      headers: getAuthHeaders(false),
-      credentials: 'include'
+    return fetch(`${API_BASE_URL}/user/islogin`, {
+      credentials: "include"
     });
-    return response;
   }
 };
 
-// User API calls
+// ================= USER APIs =================
 export const userAPI = {
   getContacts: async () => {
-    const response = await fetch(`${API_BASE_URL}/user/con`, {
-      method: 'GET',
-      headers: getAuthHeaders(false)
+    return fetch(`${API_BASE_URL}/user/con`, {
+      credentials: "include"
     });
-    return response;
   },
 
   addContact: async (name, phone) => {
-    const response = await fetch(`${API_BASE_URL}/user/add`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
+    return fetch(`${API_BASE_URL}/user/add`, {
+      method: "POST",
+      headers: jsonHeaders,
+      credentials: "include",
       body: JSON.stringify({ name, phone })
     });
-    return response;
   },
 
   deleteContact: async (phone) => {
-    const response = await fetch(`${API_BASE_URL}/user/delete/${phone}`, {
-      method: 'DELETE',
-      headers: getAuthHeaders(false)
+    return fetch(`${API_BASE_URL}/user/delete/${phone}`, {
+      method: "DELETE",
+      credentials: "include"
     });
-    return response;
   },
 
   getUserDetails: async (phone) => {
-    const response = await fetch(`${API_BASE_URL}/user/getDetails/${phone}`, {
-      method: 'GET',
-      headers: getAuthHeaders(false)
+    return fetch(`${API_BASE_URL}/user/getDetails/${phone}`, {
+      credentials: "include"
     });
-    return response;
   },
 
   updateProfile: async (formData) => {
-    const response = await fetch(`${API_BASE_URL}/user/profile`, {
-      method: 'POST',
-      headers: getAuthHeaders(false), // Don't set Content-Type for FormData
-      body: formData
+    return fetch(`${API_BASE_URL}/user/profile`, {
+      method: "POST",
+      credentials: "include",
+      body: formData // DO NOT set Content-Type
     });
-    return response;
   },
 
   getMessages: async (phone) => {
-    const response = await fetch(`${API_BASE_URL}/user/getMessages`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
+    return fetch(`${API_BASE_URL}/user/getMessages`, {
+      method: "POST",
+      headers: jsonHeaders,
+      credentials: "include",
       body: JSON.stringify({ phone })
     });
-    return response;
   },
 
   deleteMessage: async (phone, messageType, messageId) => {
-    const response = await fetch(`${API_BASE_URL}/user/${phone}/delMessage/${messageType}/${messageId}`, {
-      method: 'DELETE',
-      headers: getAuthHeaders(false)
-    });
-    return response;
+    return fetch(
+      `${API_BASE_URL}/user/${phone}/delMessage/${messageType}/${messageId}`,
+      {
+        method: "DELETE",
+        credentials: "include"
+      }
+    );
   }
 };

@@ -7,30 +7,26 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-          setIsLoading(false);
+        const res = await authAPI.checkLogin();
+
+        if (!res.ok) {
+          setUser(null);
           return;
         }
 
-        const res = await authAPI.checkLogin();
-        if (!res.ok) throw new Error("Not logged in");
-
         const data = await res.json();
+
+   
         setUser({
           username: data.username,
-          phone: data.phone,
-          token: data.token
+          phone: data.phone
         });
-
-        // Store token in localStorage
-        localStorage.setItem('authToken', data.token);
-      } catch {
+      } catch (err) {
         setUser(null);
-        localStorage.removeItem('authToken');
       } finally {
         setIsLoading(false);
       }
@@ -39,36 +35,40 @@ export const AuthProvider = ({ children }) => {
     checkLogin();
   }, []);
 
+ 
   const login = async (phone, password) => {
     try {
       const response = await authAPI.login(phone, password);
-      if (response.ok) {
-        const data = await response.json();
-        const userData = {
-          username: data.user.username,
-          phone: data.user.phone,
-          token: data.user.token
-        };
-        setUser(userData);
-        localStorage.setItem('authToken', data.user.token);
-        return { success: true };
-      } else {
-        const errorData = await response.json().catch(() => ({ message: 'Login failed' }));
-        return { success: false, message: errorData.message || 'Login failed' };
+
+      if (!response.ok) {
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: "Login failed" }));
+        return { success: false, message: errorData.message };
       }
+
+      const data = await response.json();
+
+      
+      setUser({
+        username: data.user.username,
+        phone: data.user.phone
+      });
+
+      return { success: true };
     } catch {
-      return { success: false, message: 'Network error occurred' };
+      return { success: false, message: "Network error occurred" };
     }
   };
+
 
   const logout = async () => {
     try {
       await authAPI.logout();
-    } catch (error) {
-      console.log('Logout error:', error);
+    } catch (err) {
+      console.error("Logout error:", err);
     } finally {
       setUser(null);
-      localStorage.removeItem('authToken');
     }
   };
 

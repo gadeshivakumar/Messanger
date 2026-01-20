@@ -3,8 +3,6 @@ import "../styles/chatroom.css"
 import { useLocation } from 'react-router-dom'
 import {io} from 'socket.io-client';
 import ChatMessage from '../components/ChatMessage';
-import { useContext } from 'react';
-import AuthContext from '../contexts/AuthContext';
 import { userAPI } from '../services/api';
 export default function ChatRoom() {
 
@@ -13,7 +11,6 @@ export default function ChatRoom() {
   const {profile,name,phone}=locator.state||{};
   const [messages,setMessages]=useState([])
   const socket=useRef(null);
-  const {user}=useContext(AuthContext);
   const handleSend=()=>{
     socket.current.emit('send_message',{phone:phone,message:message});
     setMessage("")
@@ -22,7 +19,6 @@ export default function ChatRoom() {
   useEffect(()=>{
     socket.current=io("https://messanger-backend-cu42.onrender.com",{
       withCredentials:true,
-      auth:{token:user.token}
     })
 
     const fetchMessages = async () => {
