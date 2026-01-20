@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
-import './home.css'
-import Contact from './Contact'
+import '../styles/home.css'
+import Contact from '../components/Contact'
 import {useNavigate,Link} from "react-router-dom"
-import AuthContext from '../apicontext'
+import AuthContext from '../contexts/AuthContext'
+import { userAPI } from '../services/api'
 
 
 export default function Home() {
-  const {setUser}=useContext(AuthContext)
+  const {logout}=useContext(AuthContext)
   const navigator=useNavigate();
 
   const handleAdd=()=>{
@@ -14,27 +15,15 @@ export default function Home() {
   }
 
   const handleLogout=async ()=>{
-
-    try{
-      await fetch("https://messanger-backend-cu42.onrender.com/api/auth/logout",{
-        method:"DELETE",
-        credentials:"include"
-      })
-      setUser(null);
-    }
-    catch(err){
-      console.log("err",err)
-    }
+    logout();
   }
   const [contacts,setContacts]=useState([]);
 
-  const handleDelete=(e,key_id)=>{
+  const handleDelete=async (e,key_id)=>{
       e.preventDefault();
       e.stopPropagation();
-      fetch(`https://messanger-backend-cu42.onrender.com/api/user/delete/${key_id}`,{
-        method:"DELETE",
-        credentials:"include",
-      }).then((res)=>{
+      try {
+        const res = await userAPI.deleteContact(key_id);
         if(res.ok){
           console.log('successfully deleted');
           setContacts((prev)=>{
@@ -43,22 +32,22 @@ export default function Home() {
         }
         else
           throw new Error("something went wrong")
-      }).catch((err)=>{
+      } catch (err) {
         console.log(err)
-      })
-  
+      }
     }
-  
+
   useEffect(()=>{
-      const conts=fetch("https://messanger-backend-cu42.onrender.com/api/user/con",{
-        method:"get",
-        credentials:"include"
-      })
-      .then(con=>con.json())
-      .then((con)=>{
-        setContacts(con)
-      })
-      .catch((err)=>console.log(err))
+      const fetchContacts = async () => {
+        try {
+          const res = await userAPI.getContacts();
+          const contacts = await res.json();
+          setContacts(contacts);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      fetchContacts();
     }
   ,[])
 
@@ -73,7 +62,7 @@ export default function Home() {
             <button onClick={handleLogout}>LogOut</button>
         </div>
     </nav>
-    
+
     <main id="main">
         <div className="head">
           <div className="sec">Contacts</div>

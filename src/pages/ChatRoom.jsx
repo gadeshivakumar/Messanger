@@ -1,10 +1,11 @@
-import React, { useEffect, useState,useRef,useMemo} from 'react'
-import "./chatroom.css"
+import React, { useEffect, useState,useRef} from 'react'
+import "../styles/chatroom.css"
 import { useLocation } from 'react-router-dom'
 import {io} from 'socket.io-client';
-import ChatMesssage from './ChatMesssage';
+import ChatMessage from '../components/ChatMessage';
 import { useContext } from 'react';
-import AuthContext from '../apicontext';
+import AuthContext from '../contexts/AuthContext';
+import { userAPI } from '../services/api';
 export default function ChatRoom() {
 
   const locator=useLocation();
@@ -12,7 +13,6 @@ export default function ChatRoom() {
   const {profile,name,phone}=locator.state||{};
   const [messages,setMessages]=useState([])
   const socket=useRef(null);
-  const [counter,setCounter]=useState(0);
   const {user}=useContext(AuthContext);
   const handleSend=()=>{
     socket.current.emit('send_message',{phone:phone,message:message});
@@ -25,18 +25,16 @@ export default function ChatRoom() {
       auth:{token:user.token}
     })
 
-    fetch("https://messanger-backend-cu42.onrender.com/api/user/getMessages",{
-      method:"POST",
-      credentials:"include",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({phone:phone})
-    }).then(res=>{
-      return res.json()
-    })
-    .then(res=>{
-      setMessages(res);
-    })
-    .catch(err=>console.log(err))
+    const fetchMessages = async () => {
+      try {
+        const res = await userAPI.getMessages(phone);
+        const messages = await res.json();
+        setMessages(messages);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchMessages();
 
     socket.current.on('akn',(msg)=>{
       const curMsg={
@@ -44,7 +42,7 @@ export default function ChatRoom() {
         message:msg.message,
         id:msg._id,
         time:msg.timestamp
-      }  
+      }
       console.log(msg);
       setMessages(prev=>[...prev,curMsg])
     })
@@ -60,19 +58,14 @@ export default function ChatRoom() {
       setMessages(prev=>[...prev,curMsg])
     })
 
-    socket.current.on("deleted",()=>{
-      fetch("https://messanger-backend-cu42.onrender.com/api/user/getMessages",{
-      method:"Post",
-      credentials:"include",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({phone:phone})
-    }).then(res=>{
-      return res.json()
-    })
-    .then(res=>{
-      setMessages(res);
-    })
-    .catch(err=>console.log(err))
+    socket.current.on("deleted",async ()=>{
+      try {
+        const res = await userAPI.getMessages(phone);
+        const messages = await res.json();
+        setMessages(messages);
+      } catch (err) {
+        console.log(err);
+      }
     })
     return ()=>{
       socket.current.off("akn");
@@ -94,12 +87,12 @@ export default function ChatRoom() {
         <div className="name">{name}</div>
       </div>
       <div className="chats">
-        {messages.map((m,index)=>{
+        {messages.map((m)=>{
           if(m.n==1){
-            return <ChatMesssage classname={"mboxleft"} socket={socket.current} message={m.message} key={m.id} id={m.id} phone={phone} n={m.n}/>
+            return <ChatMessage classname={"mboxleft"} socket={socket.current} message={m.message} key={m.id} id={m.id} phone={phone} n={m.n}/>
           }
           else{
-            return  <ChatMesssage classname={"mboxright"} socket={socket.current} message={m.message} key={m.id} id={m.id} phone={phone} n={m.n}/>
+            return  <ChatMessage classname={"mboxright"} socket={socket.current} message={m.message} key={m.id} id={m.id} phone={phone} n={m.n}/>
           }
 
         })}

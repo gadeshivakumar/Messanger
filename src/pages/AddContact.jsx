@@ -1,22 +1,18 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { userAPI } from '../services/api'
 
 export default function AddContact() {
     const navigator=useNavigate();
-    const handleSubmit=(e)=>{
+    const handleSubmit=async (e)=>{
         e.preventDefault();
-        fetch("https://messanger-backend-cu42.onrender.com/api/user/add",{
-            method:"POST",
-            credentials:"include",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({name:e.target.name.value,phone:e.target.phno.value})
-        }).then((res)=>
-                navigator("/home")
-                )
-          .catch((err)=>{
+        try {
+            await userAPI.addContact(e.target.name.value, e.target.phno.value);
+            navigator("/home");
+        } catch (err) {
             console.log(err);
-            navigator("/home")
-        })
+            navigator("/home");
+        }
     }
 
   return (

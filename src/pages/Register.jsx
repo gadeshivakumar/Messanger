@@ -1,6 +1,6 @@
 import {React,useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import "./register.css"
+import "../styles/register.css"
 export default function Register() {
     const navigator=useNavigate();
     const [errMsg,setErrMsg]=useState("")
@@ -25,7 +25,7 @@ export default function Register() {
                 navigator("/register")
             }
         }
-        catch(err){
+        catch{
             setErrMsg("server is busy right now try after some time")
             navigator("/register")
         }

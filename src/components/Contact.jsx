@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import './contact.css'
+import '../styles/contact.css'
 import { useNavigate } from 'react-router-dom'
+import { userAPI } from '../services/api'
+
 export default function Contact({name,key_id,onDelete}) {
 
   const navigator=useNavigate();
   const [prof,setProf]=useState({})
-  
- 
- 
 
   useEffect(()=>{
-      fetch(`https://messanger-backend-cu42.onrender.com/api/user/getDetails/${key_id}`,{
-        method:"get",
-        credentials:"include",
-      }).then((res)=>{
-        return res.json()
-      }).then((res)=>{
-        setProf(res)
-      }).catch((err)=>{
-        console.log(err)
-      })
+      const fetchUserDetails = async () => {
+        try {
+          const res = await userAPI.getUserDetails(key_id);
+          const data = await res.json();
+          setProf(data);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      fetchUserDetails();
     },[])
 
   const handleClick=()=>{

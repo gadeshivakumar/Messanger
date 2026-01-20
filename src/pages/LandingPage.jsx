@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AuthContext from "../apicontext";
-import "./landingpage.css";
-import Loader from "./Loader";
+import AuthContext from "../contexts/AuthContext";
+import "../styles/landingpage.css";
+import Loader from "../components/Loader";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -14,10 +14,10 @@ export default function LandingPage() {
     }
   }, [user, isLoading, navigate]);
 
-  
   if (isLoading) {
-    return <Loader/>
+    return <Loader />;
   }
+
 
   return (
     <div className="landing-container">

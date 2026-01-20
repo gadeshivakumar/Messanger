@@ -1,8 +1,10 @@
 import {React,useEffect,useState} from 'react'
-import "./profile.css"
+import "../styles/profile.css"
 import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react';
-import AuthContext from '../apicontext';
+import AuthContext from '../contexts/AuthContext';
+import { userAPI } from '../services/api';
+
 export default function Profile() {
 
   const [prof,setProf]=useState({})
@@ -13,38 +15,32 @@ export default function Profile() {
     const formData=new FormData();
     formData.append("dp",e.target.dp.files[0])
     try{
-        const res=await fetch("https://messanger-backend-cu42.onrender.com/api/user/profile",{
-          method:"POST",
-          credentials:"include",
-          body:formData
-        })
-
-        setProf(res)
-        
+        const res = await userAPI.updateProfile(formData);
+        setProf(await res.json());
     }
     catch(err){
       console.log(err)
     }
-    
+
   }
 
   useEffect(()=>{
-    fetch(`https://messanger-backend-cu42.onrender.com/api/user/getDetails/${user.phone}`,{
-      method:"get",
-      credentials:"include"
-    }).then((res)=>{
-      return res.json()
-    }).then((res)=>{
-      setProf(res)
-    }).catch((err)=>{
-      console.log(err)
-    })
-  },[prof])
+    const fetchUserDetails = async () => {
+      try {
+        const res = await userAPI.getUserDetails(user.phone);
+        const data = await res.json();
+        setProf(data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchUserDetails();
+  },[user.phone])
 
    const handleBack=()=>{
       navigator('/home')
     }
-  
+
 return (
   <div className="whatsapp-profile">
     <form className="profile-header" onSubmit={handleUpdate}>

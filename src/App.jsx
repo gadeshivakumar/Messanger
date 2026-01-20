@@ -1,53 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from "./components/Home";
-import ChatRoom from "./components/ChatRoom";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import AddContact from "./components/AddContact";
-import Profile from "./components/Profile";
-import LandingPage from "./components/LandingPage";
+import Home from "./pages/Home";
+import ChatRoom from "./pages/ChatRoom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import AddContact from "./pages/AddContact";
+import Profile from "./pages/Profile";
+import LandingPage from "./pages/LandingPage";
 import Private from "./components/Private";
-import ErrorPage from "./components/ErrorPage";
+import ErrorPage from "./pages/ErrorPage";
 
-import AuthContext from "./apicontext";
-import Loader from "./components/Loader";
+import { AuthProvider } from "./contexts/AuthContext";
 
 export default function App() {
-  const [user, setUser] = useState(null);
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-   const checkLogin = async () => {
-      try {
-        const res = await fetch("https://messanger-backend-cu42.onrender.com/api/user/islogin", {
-          credentials: "include",
-        });
-
-         if (!res.ok) throw new Error("Not logged in");
-        const data = await res.json();
-        setUser({
-          username: data.username,
-          phone: data.phone,
-          token:data.token
-        });
-      } catch (err) {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkLogin();
-  }, []);
-
-  if (isLoading) {
-    return <Loader/>
-  }
-
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -94,7 +62,7 @@ export default function App() {
           <Route path="/error" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 }
 

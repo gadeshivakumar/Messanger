@@ -1,5 +1,5 @@
 import React from 'react'
-import '../App.css'
+import '../styles/App.css'
 export default function Loader() {
   return (
       <div style={styles.loaderWrapper}>

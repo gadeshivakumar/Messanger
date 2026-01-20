@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import './chatroom.css';
+import React from 'react';
+import '../styles/chatroom.css';
+import { userAPI } from '../services/api';
 
-export default function ChatMesssage({ classname, message,id,phone,n,socket}) {
-  
-  const handleChange=(event)=>{
+export default function ChatMessage({ classname, message,id,phone,n,socket}) {
+
+  const handleChange=async (event)=>{
 
     if(event==="delete"){
-      fetch(`https://messanger-backend-cu42.onrender.com/api/user/${phone}/delMessage/${n}/${id}`,{
-        method:"DELETE",
-        credentials:"include",
-      })
-      .then(()=>{
+      try {
+        await userAPI.deleteMessage(phone, n, id);
         socket.emit("del");
-      })
-      .catch(err=>console.log(err))
+      } catch (err) {
+        console.log(err);
+      }
     }
 
   }
@@ -34,7 +33,7 @@ export default function ChatMesssage({ classname, message,id,phone,n,socket}) {
 
       {!isLeft && (
         <select className="msg-dropdown"  onChange={(e)=>
-        { 
+        {
           handleChange(e.target.value)}}>
           <option value="">🔽</option>
           <option value="delete">Delete</option>
