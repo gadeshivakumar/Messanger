@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://messanger-backend-cu42.onrender.com/api";
+const API_BASE_URL = "https://messanger.shiva.jo3.org/api";
 
 
 const jsonHeaders = {
