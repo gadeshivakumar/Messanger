@@ -11,7 +11,8 @@ export default function Login() {
         const result = await login(e.target.phoneInput.value, e.target.passwordInput.value);
 
         if(result.success){
-            navigator("/");
+          console.log(result.user)  
+          navigator("/");
         }
         else{
             if(result.message.includes('404') || result.message.includes('Register')){
