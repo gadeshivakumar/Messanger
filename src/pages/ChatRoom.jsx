@@ -20,7 +20,7 @@ export default function ChatRoom() {
     socket.current=io("https://messanger-backend-cu42.onrender.com",{
       withCredentials:true,
     })
-
+    console.log(socket.current);
     const fetchMessages = async () => {
       try {
         const res = await userAPI.getMessages(phone);
