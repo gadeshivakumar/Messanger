@@ -83,7 +83,7 @@ export default function ChatRoom() {
         <div className="name">{name}</div>
       </div>
       <div className="chats">
-        {messages.map((m)=>{
+        {messages.map((m,index)=>{
           if(m.n==1){
             return <ChatMessage classname={"mboxleft"} socket={socket.current} message={m.message} key={m.id} id={m.id} phone={phone} n={m.n}/>
           }
