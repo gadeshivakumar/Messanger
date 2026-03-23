@@ -41,9 +41,9 @@ export default function App() {
           <Route
             path="/chat"
             element={
-              // <Private>
+              <Private>
                 <ChatRoom />
-              // </Private>
+              </Private>
             }
           />
 
